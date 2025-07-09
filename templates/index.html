@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kalki HR Chatbot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #d2b4fc, #f5d0fe);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      color: #333;
+    }
+    .container {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 600px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    h2 {
+      margin: 0 0 15px 0;
+      color: #6a1b9a;
+      text-align: center;
+    }
+    #chat {
+      width: 100%;
+      height: 150px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fafafa;
+      padding: 10px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+    .message {
+      margin: 8px 0;
+      padding: 8px 12px;
+      border-radius: 16px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .message.user {
+      background: #e1bee7;
+      color: #4a148c;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .message.bot {
+      background: #ede7f6;
+      color: #311b92;
+      align-self: flex-start;
+      text-align: left;
+    }
+    .typing {
+      display: inline-block;
+      position: relative;
+      width: 50px;
+      height: 15px;
+    }
+    .typing div {
+      position: absolute;
+      top: 0;
+      width: 8px;
+      height: 8px;
+      background: #311b92;
+      border-radius: 50%;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+    .typing div:nth-child(1) {
+      left: 8px;
+      animation: typing1 0.6s infinite;
+    }
+    .typing div:nth-child(2) {
+      left: 20px;
+      animation: typing2 0.6s infinite;
+    }
+    .typing div:nth-child(3) {
+      left: 32px;
+      animation: typing3 0.6s infinite;
+    }
+    @keyframes typing1 {
+      0% { transform: scale(0); }
+      50% { transform: scale(1); }
+      100% { transform: scale(0); }
+    }
+    @keyframes typing2 {
+      0% { transform: scale(0); }
+      50% { transform: scale(1); }
+      100% { transform: scale(0); }
+    }
+    @keyframes typing3 {
+      0% { transform: scale(0); }
+      50% { transform: scale(1); }
+      100% { transform: scale(0); }
+    }
+    .input-area {
+      display: flex;
+      width: 100%;
+    }
+    #input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 1em;
+    }
+    .send-button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 20px; /* Rounded edges */
+      background: #6a1b9a; /* Purple background */
+      color: white;
+      cursor: pointer;
+      margin-left: 6px;
+      font-size: 1em;
+      transition: background 0.3s;
+    }
+    .send-button:hover {
+      background: #7b1fa2; /* Slightly lighter purple on hover */
+    }
+    .question-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+      justify-content: center;
+    }
+    .question-buttons button {
+      background: #f3e5f5;
+      border: none;
+      padding: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      color: #4a148c;
+      font-size: 0.95em;
+    }
+    .question-buttons button:hover {
+      background: #e1bee7;
+    }
+    .credits {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 12px;
+      font-size: 0.85em;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      z-index: 999;
+    }
+  </style>
+</head>
+<a href="https://in.linkedin.com/in/arya-torne-8aa290219" target="_blank" class="credits">
+  Created by Arya Torne
+</a>
+<body>
+  <div class="container">
+    <h2>Kalki HR Chatbot</h2>
+
+    <div class="question-buttons">
+      <button onclick="sendPredefined('Kalki Fashion details')">Tell me about Kalki Fashion</button>
+      <button onclick="sendPredefined('Kalkis Vision')">Kalki's Vision</button>
+      <button onclick="sendPredefined('Kalkis Mission')">Kalki's Mission</button>
+      <button onclick="sendPredefined('Kalkis Founders')">Kalki's Founders</button>
+      <button onclick="sendPredefined('HR head')">Who is the HR Head?</button>
+      
+      <button onclick="sendPredefined('When will the appraisal process begin?')">Appraisal Process</button>
+      <button onclick="sendPredefined('When will the salary be credited?')">Salary Credited</button>
+      <button onclick="sendPredefined('When will the referral bonus be credited?')">Referral Bonus</button>
+      <button onclick="sendPredefined('My designation has been changed. When will it reflect in Keka?')">Designation Change</button>
+      <button onclick="sendPredefined('When will my PF amount be credited to my account?')">PF Credit</button>
+      <button onclick="sendPredefined('When will my regularization be completed?')">Regularization</button>
+      <button onclick="sendPredefined('What is the breakdown of my salary?')">Salary Breakdown</button>
+      <button onclick="sendPredefined('When will I receive my appointment letter?')">Appointment Letter</button>
+      <button onclick="sendPredefined('When will I receive my confirmation letter?')">Confirmation Letter</button>
+      <button onclick="sendPredefined('When will I receive my increment letter?')">Increment Letter</button>
+      <button onclick="sendPredefined('What will be my referral bonus amount?')">Referral Bonus Amount</button>
+      <button onclick="sendPredefined('How much has been deducted from my salary?')">Salary Deduction</button>
+      <button onclick="sendPredefined('How much is my incentive?')">Incentive</button>
+      <button onclick="sendPredefined('The TeamLease app is not opening. What should I do?')">TeamLease App Issue</button>
+      <button onclick="sendPredefined('When will I receive my ID card?')">ID Card</button>
+      <button onclick="sendPredefined('Has my Form 16 been uploaded in Keka?')">Form 16</button>
+      <button onclick="sendPredefined('Kalki website')">Kalki Website</button>
+      <button onclick="sendPredefined('Keka portal')">Keka Portal</button>
+      
+    </div>
+
+    <div id="chat"></div>
+    <div class="input-area">
+      <input id="input" type="text" placeholder="Type your message...">
+      <button class="send-button" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    function appendMessage(sender, text) {
+      const chatElem = document.getElementById("chat");
+      const div = document.createElement("div");
+      div.className = "message " + sender;
+      div.innerHTML = (sender === "user" ? "You: " : "Bot: ") + text;
+      chatElem.appendChild(div);
+      chatElem.scrollTop = chatElem.scrollHeight;
+    }
+
+    function appendTypingIndicator() {
+      const chatElem = document.getElementById("chat");
+      const typingDiv = document.createElement("div");
+      typingDiv.className = "message bot";
+      typingDiv.id = "typing-indicator";
+      typingDiv.innerHTML = '<div class="typing"><div></div><div></div><div></div></div>';
+      chatElem.appendChild(typingDiv);
+      chatElem.scrollTop = chatElem.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+      const typingDiv = document.getElementById("typing-indicator");
+      if (typingDiv) typingDiv.remove();
+    }
+
+    function sendMessage() {
+      const inputElem = document.getElementById("input");
+      const message = inputElem.value.trim();
+      if (!message) return;
+
+      appendMessage("user", message);
+      appendTypingIndicator();
+
+      setTimeout(() => {
+        fetch("/chat", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({message: message})
+        })
+        .then(response => response.json())
+        .then(data => {
+          removeTypingIndicator();
+          appendMessage("bot", data.response);
+        });
+      }, 1000); // 1-second typing
+
+      inputElem.value = "";
+    }
+
+    function sendPredefined(text) {
+      document.getElementById("input").value = text;
+      sendMessage();
+    }
+
+    document.getElementById("input").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
